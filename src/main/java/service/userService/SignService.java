@@ -4,6 +4,7 @@ import enums.Status;
 import model.Graduation;
 import model.Person;
 import model.Student;
+import model.Teacher;
 import service.modelService.GraduationService;
 import service.modelService.PersonService;
 import service.validation.SignValidation;
@@ -16,16 +17,23 @@ public class SignService {
         Scanner scanner = new Scanner(System.in);
 
         try {
+            System.out.println("Perfil: 1. Professor 2. Aluno");
+            int profile = Integer.parseInt(scanner.nextLine());
             System.out.print("Nome: ");
             String name = scanner.nextLine();
-            System.out.print("CPF: ");
+            System.out.print("Login: ");
             String id = scanner.nextLine();
             System.out.print("Senha: ");
             String password = lenghtValidation(scanner.nextLine());
             System.out.print("Graduação: ");
             Graduation grad = new GraduationService().getGraduationByName(scanner.nextLine());
 
-            Person person = new Student(name, Status.REGULAR, grad, id, password);
+            Person person;
+            if(profile == 1){
+                person = new Teacher(name, Status.REGULAR, grad, id, password);
+            } else{
+                person = new Student(name, Status.REGULAR, grad, id, password);
+            }
 
             new SignValidation().validateNewRegister(person);
             new PersonService().savePerson(person);

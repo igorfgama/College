@@ -2,6 +2,7 @@ package service.userService;
 
 import model.Person;
 import model.Student;
+import model.Teacher;
 import service.ListCoursesMade;
 import service.modelService.PersonService;
 
@@ -32,18 +33,36 @@ public class LoginService {
             System.out.println("Login efetuado.");
             if(person instanceof Student)
                 loginService(person);
-            else loginTeacherService(person);
+            else loginTeacherService((Teacher) person);
         } else {
             System.out.println("Dados incorretos.");
         }
     }
 
-    private void loginTeacherService(Person person) {
+    private void loginTeacherService(Teacher teacher) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Bem-vindo(a), Dr(a) " + teacher.getName() + "!");
+        System.out.println("1. Notas: ");
+        System.out.println("2. Disciplinas: ");
+        System.out.println("3. Cadastrar Graduação: ");
 
+        while(true){
+            System.out.print(" -> ");
+            int choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+                case 1 -> System.out.println("// atribuir notas //");
+                case 2 -> System.out.println("// disciplinas que está lecionando //");
+                case 3 -> new MatriculateService().matriculateNewGraduation(teacher);
+                default -> System.out.println("Entrada errada");
+            }
+        }
     }
 
     private void loginService(Person person) {
         Scanner scanner = new Scanner(System.in);
+        Student student = (Student) person;
+
         System.out.println("Bem-vindo(a), " + person.getName() + "!");
         System.out.println("1. Ver Grade");
         System.out.println("2. Matricular-se");
@@ -54,12 +73,10 @@ public class LoginService {
             System.out.print(" -> ");
             int choice = Integer.parseInt(scanner.nextLine());
 
-            Student student = (Student) person;
-
             switch (choice) {
                 case 1 -> System.out.println(student.getCoursesEnrolled());
-                case 2 -> new MatriculateService().makeMatriculate(student);
-                case 3 -> new ListCoursesMade().listCourses((Student) person);
+                case 2 -> new MatriculateService().matriculateNewCourse(student);
+                case 3 -> new ListCoursesMade().listCourses(student);
                 case 4 -> new MenuService().menu();
                 default -> System.out.println("Entrada errada");
             }

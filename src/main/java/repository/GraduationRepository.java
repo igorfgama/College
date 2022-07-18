@@ -5,7 +5,7 @@ import model.Graduation;
 import java.util.*;
 
 public class GraduationRepository implements BaseRepository<Graduation> {
-    static private Set<Graduation> graduations = new HashSet<>();
+    static final private Set<Graduation> graduations = new HashSet<>();
 
     public GraduationRepository(){
         setData();
@@ -13,9 +13,7 @@ public class GraduationRepository implements BaseRepository<Graduation> {
 
     @Override
     public Set<Graduation> getAll(){
-        if(!Objects.isNull(graduations))
-            return graduations;
-        else throw new RuntimeException("Sem registro de graduações.");
+        return graduations;
     }
 
     @Override
